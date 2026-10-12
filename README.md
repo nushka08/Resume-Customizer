@@ -52,45 +52,45 @@ Resume_Customizer/
 ## Setup & Installation
 
 ### Prerequisites
-1. Python 3.10+ installed
-2. Node.js 18+ and npm installed
-3. A Google AI Studio API Key from aistudio.google.com
+1. Python 3.10+ installed  
+2. Node.js 18+ and npm installed  
+3. A Google AI Studio API Key from aistudio.google.com  
 
 ### 1. Backend
-cd backend
+cd backend  
 #### create virtual env
 python -m venv venv  
 #### activate venv
-venv\Scripts\activate
+venv\Scripts\activate  
 #### install dependencies
-pip install -r requirements.txt
+pip install -r requirements.txt  
 #### in .env replace with your api key
 #### start FastAPI local server
-uvicorn main:app --reload --port 8000
+uvicorn main:app --reload --port 8000  
 
 ### 2. Frontend
-# open separate terminal for frontend
-cd frontend
-npm install
-npm run dev
-Open your browser at https://localhost:3000
+#### open separate terminal for frontend
+cd frontend  
+npm install  
+npm run dev  
+Open your browser at https://localhost:3000  
 
 ## Deployment Guide
 ### Backend on Render
-set root dir to backend
-runtime: Python 3
-build command: pip install -r requirements.txt
-start command: uvicorn main:app --host 0.0.0.0 --port $PORT
-env variable--- GEMINI_API_KEY= your_key
+set root dir to backend  
+runtime: Python 3  
+build command: pip install -r requirements.txt  
+start command: uvicorn main:app --host 0.0.0.0 --port $PORT  
+env variable--- GEMINI_API_KEY= your_key  
 
 ### Frontend on Vercel
-root dir: frontend
-framework preset: Next.js
-env variable--- NEXT_PUBLIC_API_URL=https://your-backend-app.onrender.com
+root dir: frontend  
+framework preset: Next.js  
+env variable--- NEXT_PUBLIC_API_URL=https://your-backend-app.onrender.com  
 Deploy.
 
 ## Author
 ### Anushka Mishra
-Linkedin: https://linkedin.com/in/anushka-mishra-
+Linkedin: https://linkedin.com/in/anushka-mishra-  
 GitHub: https://github.com/nushka08
 
