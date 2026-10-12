@@ -57,16 +57,16 @@ Resume_Customizer/
 3. A Google AI Studio API Key from aistudio.google.com  
 
 ### 1. Backend
-cd backend  
+cd backend
 #### create virtual env
-python -m venv venv  
+python -m venv venv
 #### activate venv
-venv\Scripts\activate  
+venv\Scripts\activate
 #### install dependencies
-pip install -r requirements.txt  
+pip install -r requirements.txt
 #### in .env replace with your api key
 #### start FastAPI local server
-uvicorn main:app --reload --port 8000  
+uvicorn main:app --reload --port 8000
 
 ### 2. Frontend
 #### open separate terminal for frontend
