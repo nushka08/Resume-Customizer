@@ -9,13 +9,13 @@ This is a full stack web application that takes a candidate's resume (PDF or DOC
 
 ## Tech Stack:
 
-      Layer               Technology    
------------------------------------------------
-Frontend           |   Next.js + React
-Backend            |   Python 3.11 + Fast API
-Document Parsing   |   PyPDF & python-docx
-LLM Provider       |   Google Gemini API
-Hosting            |   Vercel & Render
+| Layer | Technology | 
+|---|---|
+| Frontend | Next.js + React |
+| Backend | Python 3.11 + Fast API |
+| Document Parsing | PyPDF & python-docx |
+| LLM Provider | Google Gemini API |
+| Hosting | Vercel & Render |
 
 
 ## Features
