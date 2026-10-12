@@ -58,14 +58,14 @@ Resume_Customizer/
 
 ### 1. Backend
 cd backend
-# create virtual env
+#### create virtual env
 python -m venv venv  
-# activate venv
+#### activate venv
 venv\Scripts\activate
-# install dependencies
+#### install dependencies
 pip install -r requirements.txt
-# in .env replace with your api key
-# start FastAPI local server
+#### in .env replace with your api key
+#### start FastAPI local server
 uvicorn main:app --reload --port 8000
 
 ### 2. Frontend
