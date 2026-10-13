@@ -100,7 +100,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900 py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-5xl mx-auto space-y-8">
-        {/* Header */}
+
         <div className="text-center space-y-2">
           <span className="text-xs uppercase tracking-widest font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-200">
             AI-Powered Tool
@@ -113,13 +113,11 @@ export default function Home() {
           </p>
         </div>
 
-        {/* Input Form */}
         <form onSubmit={handleSubmit} className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-slate-200 space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Resume Upload */}
             <div className="space-y-2">
               <label className="block text-sm font-semibold text-slate-800">
-                1. Upload Resume (PDF or DOCX)
+                 Upload Resume (PDF or DOCX)
               </label>
               <div className="border-2 border-dashed border-slate-300 rounded-xl p-6 text-center hover:border-blue-500 transition-colors bg-slate-50/50">
                 <input
@@ -143,16 +141,15 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Job Description Input */}
             <div className="space-y-2">
               <label className="block text-sm font-semibold text-slate-800">
-                2. Job Description
+                 Job Description
               </label>
               <textarea
                 rows={7}
                 value={jobDescription}
                 onChange={(e) => setJobDescription(e.target.value)}
-                placeholder="Paste the target job description requirements here..."
+                placeholder="Paste the target Job Description here"
                 className="w-full text-sm rounded-xl border border-slate-300 p-3.5 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
               />
             </div>
@@ -175,7 +172,6 @@ export default function Home() {
           </div>
         </form>
 
-        {/* Results Display */}
         {result && (
           <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-slate-200 space-y-6">
             <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-4">
@@ -207,7 +203,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Missing Keywords Box */}
             {result.missing_keywords && result.missing_keywords.length > 0 && (
               <div className="p-4 rounded-xl bg-amber-50 border border-amber-200 space-y-2">
                 <span className="text-xs font-bold uppercase tracking-wider text-amber-800">
@@ -226,12 +221,10 @@ export default function Home() {
               </div>
             )}
 
-            {/* Printable Resume Container (Only this prints when hitting Save as PDF) */}
             <div
               id="printable-resume"
               className="bg-white p-6 rounded-xl border border-slate-200 space-y-6"
             >
-              {/* Targeted Summary */}
               <div className="space-y-2 resume-section-item">
                 <h3 className="text-sm font-bold uppercase tracking-wider text-slate-800">
                   Professional Summary
@@ -241,7 +234,6 @@ export default function Home() {
                 </p>
               </div>
 
-              {/* Matched Skills */}
               <div className="space-y-2 resume-section-item">
                 <h3 className="text-sm font-bold uppercase tracking-wider text-slate-800">
                   Core Skills & Competencies
@@ -258,7 +250,6 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Formatted Experience Bullets */}
               <div className="space-y-4">
                 <h3 className="text-sm font-bold uppercase tracking-wider text-slate-800">
                   Relevant Experience

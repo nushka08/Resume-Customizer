@@ -26,18 +26,14 @@ body {
 }
 
 @media print {
-  /* Hide the entire website UI */
   body * {
     visibility: hidden;
   }
-
-  /* Show only the resume preview container and its children */
   #printable-resume,
   #printable-resume * {
     visibility: visible;
   }
 
-  /* Position the printable resume at the very top of the printed page */
   #printable-resume {
     position: absolute;
     left: 0;
@@ -49,7 +45,6 @@ body {
     border: none !important;
   }
 
-  /* Prevent sections from splitting across pages */
   .resume-section {
     break-inside: avoid;
     page-break-inside: avoid;
