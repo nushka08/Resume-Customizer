@@ -80,7 +80,11 @@ export default function Home() {
     }
   };
 
-  const handleDownload = () => {
+  const handlePrintPdf = () => {
+    window.print();
+  };
+
+  const handleDownloadMarkdown = () => {
     if (!result?.full_markdown_resume) return;
     const blob = new Blob([result.full_markdown_resume], { type: 'text/markdown;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
@@ -177,14 +181,25 @@ export default function Home() {
             <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-4">
               <div>
                 <h2 className="text-xl font-bold text-slate-900">Customized Output</h2>
-                <p className="text-xs text-slate-500">Review recommendations and download below</p>
+                <p className="text-xs text-slate-500">Review recommendations and export your resume</p>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center gap-3">
                 <div className="text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1.5 rounded-lg">
                   Match Score: {result.match_score}%
                 </div>
                 <button
-                  onClick={handleDownload}
+                  type="button"
+                  onClick={handlePrintPdf}
+                  className="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors flex items-center gap-1.5 shadow-sm"
+                >
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4H7v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                  </svg>
+                  Save as PDF
+                </button>
+                <button
+                  type="button"
+                  onClick={handleDownloadMarkdown}
                   className="cursor-pointer bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors"
                 >
                   Download (.md)
@@ -202,7 +217,7 @@ export default function Home() {
                   {result.missing_keywords.map((kw, i) => (
                     <span
                       key={i}
-                      className="cursor-pointer text-xs bg-white text-amber-900 border border-amber-300 px-2.5 py-1 rounded-md font-medium"
+                      className="text-xs bg-white text-amber-900 border border-amber-300 px-2.5 py-1 rounded-md font-medium"
                     >
                       {kw}
                     </span>
@@ -211,49 +226,58 @@ export default function Home() {
               </div>
             )}
 
-            {/* Targeted Summary */}
-            <div className="space-y-2">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-slate-700">
-                Tailored Professional Summary
-              </h3>
-              <p className="text-sm text-slate-700 bg-slate-50 p-4 rounded-xl border border-slate-200 leading-relaxed">
-                {result.summary}
-              </p>
-            </div>
-
-            {/* Matched Skills */}
-            <div className="space-y-2">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-slate-700">
-                Key Matched Skills
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {result.skills.map((skill, idx) => (
-                  <span
-                    key={idx}
-                    className="cursor-pointer text-xs bg-blue-50 text-blue-700 border border-blue-200 px-3 py-1 rounded-full font-medium"
-                  >
-                    {skill}
-                  </span>
-                ))}
+            {/* Printable Resume Container (Only this prints when hitting Save as PDF) */}
+            <div
+              id="printable-resume"
+              className="bg-white p-6 rounded-xl border border-slate-200 space-y-6"
+            >
+              {/* Targeted Summary */}
+              <div className="space-y-2 resume-section-item">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-slate-800">
+                  Professional Summary
+                </h3>
+                <p className="text-sm text-slate-700 bg-slate-50 print:bg-transparent p-4 print:p-0 rounded-xl border print:border-none border-slate-200 leading-relaxed">
+                  {result.summary}
+                </p>
               </div>
-            </div>
 
-            {/* Formatted Experience Bullets */}
-            <div className="space-y-4">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-slate-700">
-                Rephrased Experience Bullets
-              </h3>
-              <div className="space-y-3">
-                {result.tailored_experience.map((item, idx) => (
-                  <div key={idx} className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
-                    <h4 className="text-sm font-bold text-slate-800">{item.role}</h4>
-                    <ul className="list-disc list-inside space-y-1 text-xs text-slate-700">
-                      {item.bullet_points.map((pt, pIdx) => (
-                        <li key={pIdx} className="leading-relaxed">{pt}</li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
+              {/* Matched Skills */}
+              <div className="space-y-2 resume-section-item">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-slate-800">
+                  Core Skills & Competencies
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {result.skills.map((skill, idx) => (
+                    <span
+                      key={idx}
+                      className="text-xs bg-blue-50 print:bg-slate-100 text-blue-700 print:text-slate-800 border border-blue-200 print:border-slate-300 px-3 py-1 rounded-full font-medium"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Formatted Experience Bullets */}
+              <div className="space-y-4">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-slate-800">
+                  Relevant Experience
+                </h3>
+                <div className="space-y-3">
+                  {result.tailored_experience.map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="resume-section-item p-4 print:p-0 rounded-xl bg-slate-50 print:bg-transparent border print:border-none border-slate-200 space-y-2"
+                    >
+                      <h4 className="text-sm font-bold text-slate-900">{item.role}</h4>
+                      <ul className="list-disc list-inside space-y-1 text-xs text-slate-700">
+                        {item.bullet_points.map((pt, pIdx) => (
+                          <li key={pIdx} className="leading-relaxed">{pt}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

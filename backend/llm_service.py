@@ -1,46 +1,46 @@
 import os
 import json
+import time
+from dotenv import load_dotenv
 from google import genai
 from google.genai import types
-from dotenv import load_dotenv
 
 load_dotenv()
 
-API_KEY = os.getenv("GEMINI_API_KEY")
-client = genai.Client(api_key=API_KEY) if API_KEY else None
+# Initialize Gemini Client
+api_key = os.getenv("GEMINI_API_KEY")
+client = genai.Client(api_key=api_key) if api_key else None
 
 PROMPT_TEMPLATE = """
-You are an expert technical resume strategist and ATS consultant.
-Analyze the following Job Description (JD) and Candidate Resume text.
-Your task is to tailor the candidate's resume specifically for this job description while remaining truthful to their background.
+You are an expert ATS resume reviewer and career coach.
+Analyze the following candidate resume text against the provided job description.
 
-### Instructions:
-1. Rewrite the Professional Summary/Objective to strongly target the JD's requirements.
-2. Group and highlight relevant skills found in the resume matching the JD.
-3. Rephrase and reorder work experience bullets to incorporate relevant keywords and highlight impactful achievements.
-4. Identify critical missing keywords or tools from the JD that are NOT present in the candidate's resume.
-5. Provide a Match Score between 0 and 100 indicating the degree of alignment.
-
-### Candidate Resume:
+Candidate Resume:
+\"\"\"
 {resume_text}
+\"\"\"
 
-### Job Description:
+Target Job Description:
+\"\"\"
 {job_description}
+\"\"\"
 
-### Output Format:
-Return ONLY valid JSON matching this exact structure:
+Provide your analysis strictly in valid JSON matching the following structure:
 {{
-  "match_score": 85,
-  "summary": "...",
-  "skills": ["Skill 1", "Skill 2"],
+  "match_score": <integer from 0 to 100 representing how well the candidate fits the requirements>,
+  "missing_keywords": [<list of crucial skills, technologies, or keywords present in the job description but omitted or weak in the resume>],
+  "summary": "<a concise, ATS-tailored professional summary emphasizing relevance to this target role>",
+  "skills": [<list of core matching technical and professional skills aligned with the role>],
   "tailored_experience": [
     {{
-      "role": "Title at Company",
-      "bullet_points": ["bullet 1", "bullet 2"]
+      "role": "<company or title as stated on resume>",
+      "bullet_points": [
+        "<action-driven, achievement-focused bullet point emphasizing target JD keywords>",
+        "<another tailored bullet point>"
+      ]
     }}
   ],
-  "missing_keywords": ["keyword 1", "keyword 2"],
-  "full_markdown_resume": "# Tailored Resume\\n\\n## Professional Summary\\n...\\n\\n## Technical Skills\\n...\\n\\n## Experience\\n..."
+  "full_markdown_resume": "<a complete, professionally formatted markdown version of the customized resume>"
 }}
 """
 
@@ -56,25 +56,32 @@ def generate_customized_resume(resume_text: str, job_description: str) -> dict:
     models_to_try = [
         "gemini-3.5-flash-lite",
         "gemini-3.8-flash",
+        "gemini-2.0-flash",
+        "gemini-1.5-flash",
     ]
 
     last_error = None
     for model_name in models_to_try:
-        try:
-            print(f"Attempting inference with model: {model_name}...")
-            response = client.models.generate_content(
-                model=model_name,
-                contents=prompt,
-                config=types.GenerateContentConfig(
-                    response_mime_type="application/json",
-                    temperature=0.2,
-                ),
-            )
-            print(f"Success with {model_name}!")
-            return json.loads(response.text)
-        except Exception as e:
-            print(f"Model {model_name} failed: {e}")
-            last_error = e
-            continue
+        for attempt in range(2):
+            try:
+                print(f"Attempting inference with model: {model_name} (attempt {attempt + 1})...")
+                response = client.models.generate_content(
+                    model=model_name,
+                    contents=prompt,
+                    config=types.GenerateContentConfig(
+                        response_mime_type="application/json",
+                        temperature=0.2,
+                    ),
+                )
+                print(f"Success with {model_name}!")
+                return json.loads(response.text)
+            except Exception as e:
+                err_str = str(e)
+                print(f"Model {model_name} attempt {attempt + 1} failed: {err_str}")
+                last_error = e
+                if "503" in err_str or "UNAVAILABLE" in err_str:
+                    time.sleep(2)
+                    continue
+                break
 
     raise ValueError(f"All model attempts failed. Last error: {str(last_error)}")

@@ -24,3 +24,34 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@media print {
+  /* Hide the entire website UI */
+  body * {
+    visibility: hidden;
+  }
+
+  /* Show only the resume preview container and its children */
+  #printable-resume,
+  #printable-resume * {
+    visibility: visible;
+  }
+
+  /* Position the printable resume at the very top of the printed page */
+  #printable-resume {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 20mm;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  /* Prevent sections from splitting across pages */
+  .resume-section {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}
