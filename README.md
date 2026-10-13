@@ -3,7 +3,7 @@ This is a full stack web application that takes a candidate's resume (PDF or DOC
 
 
 ## Live link & Repository:
-1. Live Link: 
+1. Live Link: https://resume-customizer-ai-app.vercel.app/
 2. GitHub Repository: https://github.com/resumecustomizer
 
 
